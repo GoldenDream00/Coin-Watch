@@ -8,12 +8,15 @@ a {
   text-decoration: none !important;
   color: #90caf9;
 }
+body {
+  background-color: #121212;
+}
 .container {
+  padding: 10px;
   margin-top: 30;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 10;
   color: white;
   background-color: #121212;
   font-size: 50;
@@ -24,4 +27,23 @@ a {
 }
 .table_chart {
   padding: 0 !important;
+}
+.footer_container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  background-color: #121212;
+  color: white;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  border-top: 2px solid #787e87;
+}
+.footer_icons {
+  display: "flex";
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 0 20px;
+}
+.footer_icons a {
+  padding: 0 12px;
 }

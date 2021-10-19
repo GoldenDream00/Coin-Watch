@@ -181,7 +181,7 @@ const Coin = () => {
                 {
                     coin && (<>
                         <Typography style={{ color: "white", fontSize: "30px" }}>What is {coin?.name}?</Typography>
-                        <Typography style={{ color: "white" }} dangerouslySetInnerHTML={{ __html: coin?.description.en }}></Typography>
+                        <Typography style={{ marginBottom: "50px" }} className={classes.title} dangerouslySetInnerHTML={{ __html: coin?.description.en }}></Typography>
                     </>)
                 }
             </Container>

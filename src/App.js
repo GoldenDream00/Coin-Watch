@@ -5,6 +5,8 @@ import Home from './pages/Home';
 import Coin from './pages/Coin';
 import { makeStyles } from '@mui/styles';
 import Context from "./context";
+import Footer from './components/Footer';
+import { Container } from '@mui/material';
 
 function App() {
   const useStyles = makeStyles(() => ({
@@ -26,6 +28,7 @@ function App() {
           <Route path="/coins/:id" component={Coin} />
         </div>
       </BrowserRouter>
+      <Container><Footer /></Container>
     </Context>
   );
 }
