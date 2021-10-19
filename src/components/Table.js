@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-    TableContainer, Table, TableRow, TableHead, TableCell, TableBody, Paper, Container, Typography, TextField,
+    TableContainer, Table, TableRow, TableHead, TableCell, TableBody, Paper, Container, TextField,
     LinearProgress,
     Pagination
 } from "@mui/material";

@@ -8,7 +8,6 @@ const ChartGraph = ({ sparkline: historicData, change }) => {
             data={{
                 labels: historicData.map((coin) => {
                     let date = new Date(coin[0]);
-                    let time = date.getHours();
                     return date.toLocaleDateString();
                 }),
 

@@ -3,10 +3,9 @@ import React from 'react'
 import { HistoricalChart } from '../config/api';
 import { CryptoState } from '../context';
 import { Line } from "react-chartjs-2";
-import { Button, CircularProgress, Grid, Typography } from '@mui/material';
+import { Button, CircularProgress, Grid } from '@mui/material';
 import chartDays from '../config/data';
 import Graph from './Graph';
-import Sidebar from './Sidebar';
 
 const Chart = ({ id, current }) => {
     const [historicData, setData] = React.useState();
@@ -23,7 +22,7 @@ const Chart = ({ id, current }) => {
         setMarketCap(data.market_caps);
         let sum = 0;
         data.prices.map(e => {
-            sum += e[1];
+            return sum += e[1];
         })
         setAverage(sum / data.prices.length);
         setLoading(false)
@@ -39,6 +38,7 @@ const Chart = ({ id, current }) => {
     }
     React.useEffect(() => {
         fetchData();
+        // eslint-disable-next-line
     }, [currency, days])
     return (
         <>
