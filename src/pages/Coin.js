@@ -12,7 +12,6 @@ import { makeStyles } from "@mui/styles"
 import { CryptoState } from '../context';
 import Chart from '../components/Chart';
 import Sidebar from '../components/Sidebar';
-import image from "../download.png"
 
 const useStyles = makeStyles(() => ({
     container: {
@@ -24,8 +23,6 @@ const useStyles = makeStyles(() => ({
         color: 'white',
         backgroundColor: "#121212",
         fontSize: 50,
-        backgroundImage: `url(${image})`,
-        backgroundSize: "cover",
 
     }, progressBar: {
         display: "flex",
