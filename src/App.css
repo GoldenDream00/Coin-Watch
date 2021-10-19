@@ -29,6 +29,7 @@ body {
   padding: 0 !important;
 }
 .footer_container {
+  width: 100%;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -39,11 +40,16 @@ body {
   border-top: 2px solid #787e87;
 }
 .footer_icons {
-  display: "flex";
-  flex-direction: row;
-  justify-content: space-between;
-  padding: 0 20px;
+  right: 0;
+  padding: 10px 0px 0 0;
+  float: left;
 }
 .footer_icons a {
-  padding: 0 12px;
+  padding: 0 24px 0 0;
+  float: right;
+}
+@media only screen and (max-width: 480px) {
+  .footer_icons a {
+    float: left;
+  }
 }
