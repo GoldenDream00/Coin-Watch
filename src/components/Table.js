@@ -118,7 +118,7 @@ const TableComp = () => {
                     )
                 }
             </TableContainer>
-            <Container style={{ margin: "20px", display: "flex", justifyContent: "center" }}>
+            <Container style={{ marginTop: "20px", marginBottom: "40px", display: "flex", justifyContent: "center" }}>
                 <Pagination size="large" page={page} onChange={(event, value) => setPage(value)} count={4} />
             </Container>
         </Container>

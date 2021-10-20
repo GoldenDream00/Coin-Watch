@@ -12,6 +12,7 @@ import { makeStyles } from "@mui/styles"
 import { CryptoState } from '../context';
 import Chart from '../components/Chart';
 import Sidebar from '../components/Sidebar';
+import io from "socket.io-client";
 
 const useStyles = makeStyles(() => ({
     container: {
@@ -47,7 +48,8 @@ const Coin = () => {
     const classes = useStyles();
     const { id } = useParams();
     const [coin, setCoin] = useState();
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(false);
+    const [time, setTime] = useState();
     const fetchData = async () => {
         setLoading(true);
         const { data } = await axios.get(SingleCoin(id));
@@ -69,22 +71,33 @@ const Coin = () => {
     });
     useEffect(() => {
         fetchData();
+        const newSocket = io(`https://abiding-nettle-sandpaper.glitch.me`);
+        newSocket.emit("joinroom", id)
+        newSocket.on("time", (msg) => {
+            setTime(msg);
+        })
+        newSocket.on("data", (data) => {
+            setCoin(data);
+        })
         //eslint-disable-next-line
     }, [])
 
-    const value = ((coin?.market_data.current_price[currency.toLowerCase()] -
-        coin?.market_data.low_24h[currency.toLowerCase()]) / (coin?.market_data.high_24h[currency.toLowerCase()]
-            - coin?.market_data.low_24h[currency.toLowerCase()])) * 100
+    const current = coin?.market_data.current_price[currency.toLowerCase()];
+    const min = coin?.market_data.low_24h[currency.toLowerCase()];
+    const max = coin?.market_data.high_24h[currency.toLowerCase()]
+    const value = ((current - min) * 100) / (max - min);
+
     return (
         <ThemeProvider theme={darkTheme}>
             <Container className="container">
+                {loading && <LinearProgress />}
                 <Breadcrumbs aria-label="breadcrumb">
                     <Link style={{ color: "#1db954" }} underline="hover" color="inherit" to="/">
                         Coins
                     </Link>
                     <Typography color="text.primary">{coin?.id}</Typography>
                 </Breadcrumbs>
-                {loading && <LinearProgress />}
+
                 {coin && <>
                     <Chip label={`Rank #${coin?.market_cap_rank}`} /><br />
                     <Typography style={{ fontSize: "25px" }} varient="h6"><img src={coin?.image?.thumb} alt={coin?.name} /> {coin?.name}{"  "}({coin?.symbol.toUpperCase()})
@@ -94,6 +107,9 @@ const Coin = () => {
                     </Typography>
                     <Typography style={{ color: coin?.market_data.price_change_percentage_24h > 0 ? "rgb(14, 203, 129)" : "#ed5565" }}>
                         {"  "}{coin?.market_data?.price_change_percentage_24h?.toFixed(2)} %
+                    </Typography>
+                    <Typography>
+                        {time}
                     </Typography>
 
                 </>}
