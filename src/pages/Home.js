@@ -14,7 +14,6 @@ const Home = () => {
     return (
         <ThemeProvider theme={darkTheme}>
             <TableComp />
-
         </ThemeProvider>
     )
 }
