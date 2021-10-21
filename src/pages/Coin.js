@@ -13,6 +13,8 @@ import { CryptoState } from '../context';
 import Chart from '../components/Chart';
 import Sidebar from '../components/Sidebar';
 import io from "socket.io-client";
+import FullscreenIcon from '@mui/icons-material/Fullscreen';
+import FullscreenExitIcon from '@mui/icons-material/FullscreenExit';
 
 const useStyles = makeStyles(() => ({
     container: {
@@ -44,6 +46,7 @@ const useStyles = makeStyles(() => ({
 }))
 
 const Coin = () => {
+
     const { currency, symbol } = CryptoState();
     const classes = useStyles();
     const { id } = useParams();
@@ -51,12 +54,34 @@ const Coin = () => {
     const [loading, setLoading] = useState(false);
     const [time, setTime] = useState();
     const [change, setChange] = useState(0);
+    const [fullScreen, setFullScreen] = useState(false);
     const fetchData = async () => {
         setLoading(true);
         const { data } = await axios.get(SingleCoin(id));
         setCoin(data);
         document.title = "Coinwatch " + data.name;
         setLoading(false)
+    }
+    var elem = document.documentElement;
+    function openFullscreen() {
+        if (elem.requestFullscreen) {
+            elem.requestFullscreen();
+        } else if (elem.webkitRequestFullscreen) { /* Safari */
+            elem.webkitRequestFullscreen();
+        } else if (elem.msRequestFullscreen) { /* IE11 */
+            elem.msRequestFullscreen();
+        }
+        setFullScreen(true);
+    }
+    function closeFullscreen() {
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+        } else if (document.webkitExitFullscreen) { /* Safari */
+            document.webkitExitFullscreen();
+        } else if (document.msExitFullscreen) { /* IE11 */
+            document.msExitFullscreen();
+        }
+        setFullScreen(false);
     }
     function numberWithCommas(x) {
         if (x) {
@@ -109,7 +134,7 @@ const Coin = () => {
                 </Breadcrumbs>
 
                 {coin && <Grid container>
-                    <Grid item lg={6} sm={12} md={6} xs={12}>
+                    <Grid item lg={12} sm={12} md={6} xs={12}>
                         <Chip label={`Rank #${coin?.market_cap_rank}`} /><br />
                         <Typography style={{ fontSize: "25px" }} varient="h6"><img src={coin?.image?.thumb} alt={coin?.name} /> {coin?.name}{"  "}({coin?.symbol.toUpperCase()})
                         </Typography>
@@ -117,6 +142,8 @@ const Coin = () => {
                             <Typography style={{ fontSize: "30px", fontWeight: "bolder", color: change === 0 ? "white" : change > 0 ? "rgb(14, 203, 129)" : "#ed5565" }} varient="h6">
                                 {symbol}{numberWithCommas(coin?.market_data?.current_price[currency.toLowerCase()])}
                             </Typography>
+                            {fullScreen ? <FullscreenExitIcon style={{ cursor: "pointer" }} onClick={closeFullscreen} fontSize="large" />
+                                : <FullscreenIcon style={{ cursor: "pointer" }} onClick={openFullscreen} fontSize="large" />}
                         </div>
                         <Typography style={{ color: coin?.market_data.price_change_percentage_24h > 0 ? "rgb(14, 203, 129)" : "#ed5565" }}>
                             {"  "}{coin?.market_data?.price_change_percentage_24h?.toFixed(2)} %
