@@ -71,12 +71,14 @@ const Coin = () => {
     });
     useEffect(() => {
         fetchData();
-        const newSocket = io(`https://abiding-nettle-sandpaper.glitch.me`);
-        newSocket.emit("joinroom", id)
-        newSocket.on("time", (msg) => {
+        const socket = io(`http://localhost:4000`, {
+            autoConnect: true,
+        });
+        socket.emit("joinroom", id)
+        socket.on("time", (msg) => {
             setTime(msg);
         })
-        newSocket.on("data", (data) => {
+        socket.on("data", (data) => {
             setCoin(data);
         })
         //eslint-disable-next-line
