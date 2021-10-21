@@ -50,6 +50,7 @@ const Coin = () => {
     const [coin, setCoin] = useState();
     const [loading, setLoading] = useState(false);
     const [time, setTime] = useState();
+    const [change, setChange] = useState(0);
     const fetchData = async () => {
         setLoading(true);
         const { data } = await axios.get(SingleCoin(id));
@@ -79,7 +80,12 @@ const Coin = () => {
             setTime(msg);
         })
         socket.on("data", (data) => {
-            setCoin(data);
+            const currentVal = data.market_data.current_price[currency.toLowerCase()];
+            setCoin((preVal) => {
+                setChange(currentVal - preVal.market_data.current_price[currency.toLowerCase()])
+                return data;
+            });
+
         })
         //eslint-disable-next-line
     }, [])
@@ -88,11 +94,13 @@ const Coin = () => {
     const min = coin?.market_data.low_24h[currency.toLowerCase()];
     const max = coin?.market_data.high_24h[currency.toLowerCase()]
     const value = ((current - min) * 100) / (max - min);
+    console.log("value", value)
 
     return (
         <ThemeProvider theme={darkTheme}>
             <Container className="container">
                 {loading && <LinearProgress />}
+
                 <Breadcrumbs aria-label="breadcrumb">
                     <Link style={{ color: "#1db954" }} underline="hover" color="inherit" to="/">
                         Coins
@@ -100,21 +108,28 @@ const Coin = () => {
                     <Typography color="text.primary">{coin?.id}</Typography>
                 </Breadcrumbs>
 
-                {coin && <>
-                    <Chip label={`Rank #${coin?.market_cap_rank}`} /><br />
-                    <Typography style={{ fontSize: "25px" }} varient="h6"><img src={coin?.image?.thumb} alt={coin?.name} /> {coin?.name}{"  "}({coin?.symbol.toUpperCase()})
-                    </Typography>
-                    <Typography style={{ fontSize: "30px", fontWeight: "bolder" }} varient="h6">{symbol}{numberWithCommas(coin?.market_data?.current_price[currency.toLowerCase()])}
+                {coin && <Grid container>
+                    <Grid item lg={6} sm={12} md={6} xs={12}>
+                        <Chip label={`Rank #${coin?.market_cap_rank}`} /><br />
+                        <Typography style={{ fontSize: "25px" }} varient="h6"><img src={coin?.image?.thumb} alt={coin?.name} /> {coin?.name}{"  "}({coin?.symbol.toUpperCase()})
+                        </Typography>
+                        <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
+                            <Typography style={{ fontSize: "30px", fontWeight: "bolder", color: change === 0 ? "white" : change > 0 ? "rgb(14, 203, 129)" : "#ed5565" }} varient="h6">
+                                {symbol}{numberWithCommas(coin?.market_data?.current_price[currency.toLowerCase()])}
+                            </Typography>
+                        </div>
+                        <Typography style={{ color: coin?.market_data.price_change_percentage_24h > 0 ? "rgb(14, 203, 129)" : "#ed5565" }}>
+                            {"  "}{coin?.market_data?.price_change_percentage_24h?.toFixed(2)} %
+                        </Typography>
+                        <Typography>
+                            {time}
+                        </Typography>
+                    </Grid>
+                    <Grid item lg={6} sm={12} md={12}>
 
-                    </Typography>
-                    <Typography style={{ color: coin?.market_data.price_change_percentage_24h > 0 ? "rgb(14, 203, 129)" : "#ed5565" }}>
-                        {"  "}{coin?.market_data?.price_change_percentage_24h?.toFixed(2)} %
-                    </Typography>
-                    <Typography>
-                        {time}
-                    </Typography>
-
-                </>}
+                    </Grid>
+                </Grid>
+                }
                 {
                     coin && (
                         <Grid container columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
@@ -203,7 +218,7 @@ const Coin = () => {
                     </>)
                 }
             </Container>
-        </ThemeProvider>
+        </ThemeProvider >
     )
 }
 
