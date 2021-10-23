@@ -24,14 +24,16 @@ const Graph = ({ historicData, days, currency, average }) => {
                 datasets: [
                     {
                         showLines: true,
-                        borderWidth: 1,
+                        borderWidth: 0.2,
                         data: historicData.map((coin) => coin[1]),
                         label: `Price ( Past ${days} Days ) in ${currency}`,
+                        borderColor: "rgb(173,181,189,1)",
                         backgroundColor: historicData.map(c => {
-                            return c[1] > average ? "#a3d2ff" : "red";
+                            return c[1] > average ? "rgb(14, 203, 129)" : "red";
                         }),
+
                     },
-                ], tension: 0.5
+                ], tension: 0.1
             }}
             options={{
                 elements: {
@@ -44,6 +46,9 @@ const Graph = ({ historicData, days, currency, average }) => {
                             callback: function (value, index, values) {
                                 return numFormatter(value);
                             }
+                        }, grid: {
+                            display: true,
+                            color: "rgb(173,181,189,0.2)"
                         }
                     }
                 }

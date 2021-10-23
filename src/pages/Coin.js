@@ -46,7 +46,6 @@ const useStyles = makeStyles(() => ({
 }))
 
 const Coin = () => {
-
     const { currency, symbol } = CryptoState();
     const classes = useStyles();
     const { id } = useParams();
