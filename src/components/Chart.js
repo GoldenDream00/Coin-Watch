@@ -6,6 +6,8 @@ import { Line } from "react-chartjs-2";
 import { Button, CircularProgress, Grid } from '@mui/material';
 import chartDays from '../config/data';
 import Graph from './Graph';
+import CandleStick from '../components/CandelStick';
+
 
 const Chart = ({ id, current }) => {
     const [historicData, setData] = React.useState();
@@ -14,12 +16,16 @@ const Chart = ({ id, current }) => {
     const [loading, setLoading] = React.useState(false)
     const [average, setAverage] = React.useState(0);
     const { currency } = CryptoState();
+    const [ohlc, setOlch] = React.useState();
+
 
     const fetchData = async () => {
         setLoading(true)
         const { data } = await axios.get(HistoricalChart(id, days, currency));
         setData(data.prices);
         setMarketCap(data.market_caps);
+        const ohlcData = await axios.get(`https://api.coingecko.com/api/v3/coins/${id}/ohlc?vs_currency=${currency.toLowerCase()}&days=${days}`)
+        setOlch(ohlcData.data);
         let sum = 0;
         data.prices.map(e => {
             return sum += e[1];
@@ -68,6 +74,16 @@ const Chart = ({ id, current }) => {
                     historicData={historicData}
                     days={days} currency={currency}
                     average={average} />}
+            </Grid>
+            <Grid item lg={12} md={12} xs={12}>
+                {loading ? <CircularProgress style={{
+                    display: "flex",
+                    margin: "50px auto",
+                    justifyContent: "center",
+                    textAlign: "center",
+
+                }} /> : <></>}
+                {!loading && ohlc && <CandleStick data={ohlc} />}
             </Grid>
             <Grid item lg={12} md={12} xs={12}>
                 {loading ? <CircularProgress style={{

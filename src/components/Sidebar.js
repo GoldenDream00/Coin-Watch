@@ -27,11 +27,12 @@ const useStyles = makeStyles(() => ({
     }
 }))
 
-const Sidebar = ({ numberWithCommas, coin, currency, symbol }) => {
+const Sidebar = ({ numberWithCommas, coin, currency, symbol, change }) => {
     const classes = useStyles();
     const marketData = [{
         title: `${coin?.symbol.toUpperCase()} Price`,
-        value: symbol + numberWithCommas(coin?.market_data.current_price[currency.toLowerCase()])
+        value: symbol + numberWithCommas(coin?.market_data.current_price[currency.toLowerCase()]),
+        class: change === 0 ? "" : (change > 0 ? "green" : "red"),
     }, {
         title: "Market Capital",
         value: symbol + numberWithCommas(coin?.market_data.market_cap[currency.toLowerCase()])

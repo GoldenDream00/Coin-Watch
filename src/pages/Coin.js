@@ -232,11 +232,13 @@ const Coin = () => {
                                 <Sidebar numberWithCommas={numberWithCommas} symbol={symbol}
                                     currency={currency}
                                     coin={coin}
+                                    change={change}
                                 />
                             )
                         }
                     </Grid>
                 </Grid>
+
                 {
                     coin && (<>
                         <Typography style={{ color: "white", fontSize: "30px" }}>What is {coin?.name}?</Typography>
@@ -244,7 +246,8 @@ const Coin = () => {
                     </>)
                 }
             </Container>
-        </ThemeProvider >
+
+        </ThemeProvider>
     )
 }
 
