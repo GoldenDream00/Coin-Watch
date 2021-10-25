@@ -5,6 +5,8 @@ import {
     Grid,
     Breadcrumbs,
 } from "@mui/material";
+import TrendingUpIcon from '@mui/icons-material/TrendingUp';
+import TrendingDownIcon from '@mui/icons-material/TrendingDown';
 import { Link, useParams } from 'react-router-dom';
 import { SingleCoin } from '../config/api';
 import axios from "axios";
@@ -135,11 +137,24 @@ const Coin = () => {
                 {coin && <Grid container>
                     <Grid item lg={12} sm={12} md={6} xs={12}>
                         <Chip label={`Rank #${coin?.market_cap_rank}`} /><br />
-                        <Typography style={{ fontSize: "25px" }} varient="h6"><img src={coin?.image?.thumb} alt={coin?.name} /> {coin?.name}{"  "}({coin?.symbol.toUpperCase()})
+                        <Typography style={{
+                            fontSize: "25px",
+                            padding: "5px",
+                            color: change === 0 ? "white" : change > 0 ? "rgb(14, 203, 129)" : "#ed5565"
+                        }} varient="h1">
+                            <img style={{ width: "30px", padding: "12px 5px 0 0" }} src={coin?.image?.small} alt={coin?.name} />
+                            {coin?.name}{"  "}({coin?.symbol.toUpperCase()})
                         </Typography>
                         <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
-                            <Typography style={{ fontSize: "30px", fontWeight: "bolder", color: change === 0 ? "white" : change > 0 ? "rgb(14, 203, 129)" : "#ed5565" }} varient="h6">
+                            <Typography style={{
+                                fontSize: "35px", fontWeight: "bolder",
+                                color: change === 0 ? "white" : change > 0 ? "rgb(14, 203, 129)" : "#ed5565"
+                            }} varient="h6">
                                 {symbol}{numberWithCommas(coin?.market_data?.current_price[currency.toLowerCase()])}
+                                {change === 0 ? <></> :
+                                    change > 0 ?
+                                        <TrendingUpIcon sx={{ color: "rgb(14, 203, 129)" }} fontSize="large" />
+                                        : <TrendingDownIcon sx={{ color: "#ed5565" }} fontSize="large" />}
                             </Typography>
                             {fullScreen ? <FullscreenExitIcon style={{ cursor: "pointer" }} onClick={closeFullscreen} fontSize="large" />
                                 : <FullscreenIcon style={{ cursor: "pointer" }} onClick={openFullscreen} fontSize="large" />}
