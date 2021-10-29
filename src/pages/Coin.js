@@ -98,7 +98,7 @@ const Coin = () => {
     });
     useEffect(() => {
         fetchData();
-        const socket = io(`http://localhost:4000`, {
+        const socket = io(`https://abiding-nettle-sandpaper.glitch.me`, {
             autoConnect: true,
         });
         socket.emit("joinroom", id)
