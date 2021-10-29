@@ -7,6 +7,7 @@ import { makeStyles } from '@mui/styles';
 import Context from "./context";
 import Footer from './components/Footer';
 import { Container } from '@mui/material';
+import Notification from './components/Notification';
 
 function App() {
   const useStyles = makeStyles(() => ({
@@ -28,6 +29,7 @@ function App() {
           <Route path="/coins/:id" component={Coin} />
         </div>
       </BrowserRouter>
+      <Notification />
       <Container><Footer /></Container>
     </Context>
   );

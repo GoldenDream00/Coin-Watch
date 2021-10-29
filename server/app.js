@@ -1,14 +1,19 @@
+//imports 
 require("dotenv").config()
 const express = require("express");
 const app = express();
 const socket = require("socket.io");
-//const write = require('write');
 const { initializeApp } = require("firebase/app")
-const { getDatabase, ref, set, remove } = require("firebase/database")
+const { getDatabase, ref, set, remove } = require("firebase/database");
+const { GoogleAuthProvider, signInWithRedirect, getAuth } = require("firebase/auth");
 const axios = require("axios");
+
+
+//routes
 app.get("/", (req, res) => {
     res.send("node server");
 })
+
 const firebaseConfig = {
     apiKey: process.env.API_KEY,
     authDomain: process.env.AUTH_DOMAIN,
@@ -21,6 +26,9 @@ const firebaseConfig = {
 }
 
 const firebaseApp = initializeApp(firebaseConfig);
+
+const auth = getAuth(firebaseApp);
+
 const db = getDatabase(firebaseApp)
 const server = app.listen(4000, () => {
     console.log("server started");

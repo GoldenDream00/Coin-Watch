@@ -98,7 +98,7 @@ const Coin = () => {
     });
     useEffect(() => {
         fetchData();
-        const socket = io(`https://abiding-nettle-sandpaper.glitch.me`, {
+        const socket = io(`http://localhost:4000`, {
             autoConnect: true,
         });
         socket.emit("joinroom", id)
@@ -120,7 +120,6 @@ const Coin = () => {
     const min = coin?.market_data.low_24h[currency.toLowerCase()];
     const max = coin?.market_data.high_24h[currency.toLowerCase()]
     const value = ((current - min) * 100) / (max - min);
-    console.log("value", value)
 
     return (
         <ThemeProvider theme={darkTheme}>
