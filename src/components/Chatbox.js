@@ -1,6 +1,14 @@
 import React from "react";
 import ChatBubbleIcon from "@mui/icons-material/ChatBubble";
-import { Container,  TextField, Button } from "@mui/material";
+import {
+  TextField,
+  Button,
+  Avatar,
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
+  Typography,
+} from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import { CryptoState } from "../context";
 const buttonStyle = {
@@ -12,8 +20,21 @@ const buttonStyle = {
   bottom: "5px",
   backgroundColor: "#90caf9",
 };
-const Chatbox = ({ socket,coin }) => {
-  const [open, setOpen] = React.useState(true);
+const containerStyle = {
+  position: "fixed",
+  bottom: "80px",
+  backgroundColor: "#1e1e1e",
+  height: "80%",
+  width: "100%",
+  maxWidth: "450px",
+  padding: "5px",
+  zIndex: 100,
+  color: "white",
+  fontSize: "1.2rem",
+};
+const Chatbox = ({ socket, coin }) => {
+  const messagesEndRef = React.useRef(null);
+  const [open, setOpen] = React.useState(false);
   const { user } = CryptoState();
   const [message, setMessage] = React.useState("");
   const [chat, setChat] = React.useState([]);
@@ -25,16 +46,17 @@ const Chatbox = ({ socket,coin }) => {
   }
   React.useEffect(() => {
     socket.on("message", (chat) => {
+      messagesEndRef?.current?.scrollIntoView({ behavior: "smooth" });
       console.log(chat);
       setChat((p) => {
         return [...p, chat];
       });
     });
+    
     // eslint-disable-next-line
   },[])
   return (
     <>
-      <Container>
         <button
           style={buttonStyle}
           type="button"
@@ -46,52 +68,40 @@ const Chatbox = ({ socket,coin }) => {
         >
           <ChatBubbleIcon size={30} />
         </button>
-      </Container>
       {open && (
-        <Container>
-          <div
-            style={{
-              position: "fixed",
-              bottom: "100px",
-              backgroundColor: "#1e1e1e",
-              height: "60%",
-              width: "100%",
-              maxWidth: "600px",
-              padding: "5px",
-              zIndex: 100,
-              color: "white",
-              fontSize: "1.2rem",
-            }}
-          >
-            <div
-              style={{
-                position: "fixed",
-                height: "50%",
-                width: "100%",
-                maxWidth: "600px",
-                padding: "5px",
-                zIndex: 100,
-                color: "white",
-                fontSize: "1.2rem",
-                overflowY: "scroll",
-              }}
-            >
-              {chat.map((e) => {
-                return (
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "row",
-                      paddingBottom: "5px",
-                    }}
-                  >
-                    <p style={{ paddingRight: "10px", color: "#787e87",maxWidth:"30%" }}>
-                      {e.user.displayName}
-                    </p>
-                    <p>{e.message}</p>
-                  </div>
-                );
-              })}
+        <>
+          <div style={containerStyle}>
+            <div style={{display:"block",position:"relative",overflowY:"scroll",height:"90%"}}>
+              {
+                chat.map(e => {
+                  return (
+                    <ListItem alignItems="flex-start">
+                      <ListItemAvatar>
+                        <Avatar
+                          alt="Travis Howard"
+                          src={e.user.photoURL}
+                        />
+                      </ListItemAvatar>
+                      <ListItemText
+                        primary={e.user.displayName}
+                        secondary={
+                          <React.Fragment>
+                            <Typography
+                              sx={{ display: "inline" }}
+                              component="span"
+                              variant="body2"
+                              color="text.primary"
+                            >
+                            </Typography>
+                            {e.message}
+                          </React.Fragment>
+                        }
+                      />
+                    </ListItem>
+                  );
+                })
+              }
+               <div ref={messagesEndRef} />   
             </div>
             <form>
               <div
@@ -121,7 +131,7 @@ const Chatbox = ({ socket,coin }) => {
               </div>
             </form>
           </div>
-        </Container>
+        </>
       )}
     </>
   );

@@ -442,7 +442,9 @@ const Coin = () => {
           </>
         )}
       </Container>
-      {user && soc && soc.connected && <Chatbox socket = {soc} coin= {id} />}
+      <Container>
+        {user && soc && soc.connected && <Chatbox socket={soc} coin={id} />}
+      </Container>
     </ThemeProvider>
   );
 };
