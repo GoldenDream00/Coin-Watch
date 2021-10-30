@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState, useEffect } from 'react'
 import { auth } from './firebase';
 import { onAuthStateChanged } from "firebase/auth";
 import { db } from "./firebase";
-import { doc, setDoc,onSnapshot } from "firebase/firestore";
+import { doc,onSnapshot } from "firebase/firestore";
 
 const Crypto = createContext();
 const Context = ({ children }) => {
