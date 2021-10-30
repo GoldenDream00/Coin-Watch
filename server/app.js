@@ -3,9 +3,6 @@ require("dotenv").config()
 const express = require("express");
 const app = express();
 const socket = require("socket.io");
-const { initializeApp } = require("firebase/app")
-const { getDatabase, ref, set, remove } = require("firebase/database");
-const { GoogleAuthProvider, signInWithRedirect, getAuth } = require("firebase/auth");
 const axios = require("axios");
 
 
@@ -14,22 +11,6 @@ app.get("/", (req, res) => {
     res.send("node server");
 })
 
-const firebaseConfig = {
-    apiKey: process.env.API_KEY,
-    authDomain: process.env.AUTH_DOMAIN,
-    databaseURL: process.env.DATABASE_URL,
-    projectId: process.env.PROJECT_ID,
-    storageBucket: process.env.STORAGE_BUCKET,
-    messagingSenderID: process.env.MESSAGE_SENDER,
-    appId: process.env.APP_ID,
-    measurementId: process.env.MEASUR_ID
-}
-
-const firebaseApp = initializeApp(firebaseConfig);
-
-const auth = getAuth(firebaseApp);
-
-const db = getDatabase(firebaseApp)
 const server = app.listen(4000, () => {
     console.log("server started");
 });
@@ -51,12 +32,11 @@ io.on("connection", (socket) => {
             id: socket.id,
             room,
         })
-        set(ref(db, socket.id), {
-            id: socket.id,
-            room,
-        });
         //write.sync("data.json", JSON.stringify(data), { overwrite: true });
         socket.join(room);
+        socket.on("chatMessage", (chat) => {
+          io.to(room).emit("message", chat);
+        });
         const send = async () => {
             const { data } = await axios.get(`https://api.coingecko.com/api/v3/coins/${room}`)
             socket.emit("time", new Date().toUTCString() + " " + room)
@@ -68,11 +48,9 @@ io.on("connection", (socket) => {
             data.splice(index, 1);
             console.log(data)
             //write.sync("data.json", JSON.stringify(data), { overwrite: true })
-            remove(ref(db, socket.id));
-
         })
-
+        
     })
-
+    
 })
 

@@ -26,6 +26,7 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 //import { doc, setDoc } from "firebae/firestore"
 import { db } from "../firebase";
 import { doc, setDoc } from "firebase/firestore";
+import Chatbox from "../components/Chatbox";
 
 const useStyles = makeStyles(() => ({
   container: {
@@ -66,6 +67,7 @@ const Coin = () => {
   const [time, setTime] = useState();
   const [change, setChange] = useState(0);
   const [fullScreen, setFullScreen] = useState(false);
+  const [soc, setSoc] = useState(null);
   const fetchData = async () => {
     setLoading(true);
     const { data } = await axios.get(SingleCoin(id));
@@ -154,11 +156,15 @@ const Coin = () => {
   });
   useEffect(() => {
     fetchData();
-    const socket = io(`https://abiding-nettle-sandpaper.glitch.me`, {
-      autoConnect: true,
-    });
+    const socket = io(`https://abiding-nettle-sandpaper.glitch.me`,
+      {
+        autoConnect: true,
+      }
+    );
+    setSoc(socket);
     socket.emit("joinroom", id);
     socket.on("time", (msg) => {
+      console.log("time",msg)
       setTime(msg);
     });
     socket.on("data", (data) => {
@@ -436,6 +442,7 @@ const Coin = () => {
           </>
         )}
       </Container>
+      {user && soc && soc.connected && <Chatbox socket = {soc} coin= {id} />}
     </ThemeProvider>
   );
 };
