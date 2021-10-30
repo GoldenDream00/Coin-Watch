@@ -7,7 +7,7 @@ import { useHistory } from "react-router-dom";
 import { CryptoState } from "../context";
 import icon from "../coinwatch_icon.png";
 import GoogleIcon from '@mui/icons-material/Google';
-import auth from "../firebase"
+import { auth } from "../firebase"
 import { GoogleAuthProvider, signInWithPopup, signOut } from "@firebase/auth";
 
 const useStyles = makeStyles(() => ({
