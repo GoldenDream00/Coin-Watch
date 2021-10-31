@@ -10,8 +10,9 @@ import {
 } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import { CryptoState } from "../context";
+import backImg from "../chat_back.jpg";
 
-const Chatbox = ({ socket, coin }) => {
+const Chatbox = ({ socket, img }) => {
   const messagesEndRef = React.useRef(null);
   const { user } = CryptoState();
   const [message, setMessage] = React.useState("");
@@ -19,29 +20,29 @@ const Chatbox = ({ socket, coin }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (message.length > 0) {
-      console.log("emitS")
+      console.log("emitS");
       let userInfo = {
         displayName: user.displayName,
-        photoURL:user.photoURL,
-      } 
-      socket.emit("chatMessage", { message, user:userInfo });
+        photoURL: user.photoURL,
+      };
+      socket.emit("chatMessage", { message, user: userInfo });
       setMessage("");
     }
-  }
+  };
   React.useEffect(() => {
     socket.on("message", (chat) => {
-    
       console.log(chat);
       setChat((p) => {
         return [...p, chat];
       });
       messagesEndRef?.current?.scrollIntoView({
         behavior: "smooth",
-        block: "nearest",      });
+        block: "nearest",
+      });
     });
-    
+
     // eslint-disable-next-line
-  },[])
+  }, []);
   return (
     <div
       className="chatDiv"
@@ -53,19 +54,20 @@ const Chatbox = ({ socket, coin }) => {
         color: "white",
         maxHeight: "570px",
         marginBottom: "30px",
+        backgroundImage: `url(${backImg})`,
       }}
     >
       <div
         style={{
           display: "flex",
-          justifyContent: "center",
+          justifyContent: "flex-start",
           padding: "5px",
           backgroundColor: "rgb(144,202,249,0.7)",
           color: "black",
         }}
       >
-  
-        <Typography>{coin.toUpperCase()} community</Typography>
+        <Avatar sx={{ width: 24, height: 24 }} alt="profile" src={img} />
+        <Typography style={{ paddingLeft: 6 }}>Live chat (beta)</Typography>
       </div>
       <div style={{ overflowY: "scroll", maxHeight: "80%" }}>
         {chat.map((e) => {
@@ -100,6 +102,7 @@ const Chatbox = ({ socket, coin }) => {
             bottom: "0px",
             position: "absolute",
             width: "100%",
+            paddingLeft: "20px",
           }}
         >
           <TextField
@@ -107,6 +110,7 @@ const Chatbox = ({ socket, coin }) => {
             style={{ width: "80%" }}
             id="standard-required"
             variant="standard"
+            placeholder="Say something..."
             value={message}
             onChange={(e) => {
               setMessage(e.target.value);

@@ -420,7 +420,7 @@ const Coin = () => {
             <Grid container>
               <Grid item lg={12} md={12} xs={12}>
                 {user && soc && soc.connected && (
-                  <Chatbox socket={soc} coin={id} />
+                  <Chatbox socket={soc} img={coin?.image?.thumb} />
                 )}
               </Grid>
               <Grid item lg={12} md={12} xs={12}>
