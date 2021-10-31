@@ -417,15 +417,25 @@ const Coin = () => {
             )}
           </Grid>
           <Grid item lg={4} md={12} xs={12}>
-            {coin && !loading && (
-              <Sidebar
-                numberWithCommas={numberWithCommas}
-                symbol={symbol}
-                currency={currency}
-                coin={coin}
-                change={change}
-              />
-            )}
+            <Grid container>
+              <Grid item lg={12} md={12} xs={12}>
+                {user && soc && soc.connected && (
+                  <Chatbox socket={soc} coin={id} />
+                )}
+              </Grid>
+              <Grid item lg={12} md={12} xs={12}>
+                {coin && !loading && (
+                  <Sidebar
+                    numberWithCommas={numberWithCommas}
+                    symbol={symbol}
+                    currency={currency}
+                    coin={coin}
+                    change={change}
+                  />
+                )}
+              </Grid>
+              
+            </Grid>
           </Grid>
         </Grid>
 
@@ -442,9 +452,7 @@ const Coin = () => {
           </>
         )}
       </Container>
-      <Container>
-        {user && soc && soc.connected && <Chatbox socket={soc} coin={id} />}
-      </Container>
+      <Container></Container>
     </ThemeProvider>
   );
 };

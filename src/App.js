@@ -14,7 +14,8 @@ function App() {
     app: {
       backgroundColor: "#121212",
       minHeight: "100vh",
-      padding: 0
+      padding: 0,
+      margin:0
     }
   }))
 

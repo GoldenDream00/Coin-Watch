@@ -53,3 +53,7 @@ body {
     float: left;
   }
 }
+
+.chatDiv ::-webkit-scrollbar{
+  width:1px
+}
