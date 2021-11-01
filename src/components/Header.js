@@ -35,7 +35,6 @@ const Header = () => {
     const styles = useStyles();
     const [anchorEl, setAnchorEl] = React.useState(null);
     const { currency, setCurrency, user, setAlert } = CryptoState()
-    console.log(user);
     const provider = new GoogleAuthProvider();
     const googleSignin = () => {
         signInWithPopup(auth, provider).then(res => {

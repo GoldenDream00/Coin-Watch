@@ -8,6 +8,8 @@ import {
   Typography,
   Grid,
   Breadcrumbs,
+  Alert,
+  AlertTitle,
 } from "@mui/material";
 import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 import TrendingDownIcon from "@mui/icons-material/TrendingDown";
@@ -164,7 +166,6 @@ const Coin = () => {
     setSoc(socket);
     socket.emit("joinroom", id);
     socket.on("time", (msg) => {
-      console.log("time",msg)
       setTime(msg);
     });
     socket.on("data", (data) => {
@@ -422,6 +423,12 @@ const Coin = () => {
                 {user && soc && soc.connected && (
                   <Chatbox socket={soc} img={coin?.image?.thumb} />
                 )}
+                {soc && !user && (
+                  <Alert severity="info">
+                    <AlertTitle>Login</AlertTitle>
+                    Login in with Google to join <strong>Live chat!</strong>
+                  </Alert>
+                )}
               </Grid>
               <Grid item lg={12} md={12} xs={12}>
                 {coin && !loading && (
@@ -434,7 +441,6 @@ const Coin = () => {
                   />
                 )}
               </Grid>
-              
             </Grid>
           </Grid>
         </Grid>
