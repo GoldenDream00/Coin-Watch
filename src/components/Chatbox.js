@@ -68,7 +68,7 @@ const Chatbox = ({ socket, img }) => {
         <Avatar sx={{ width: 24, height: 24 }} alt="profile" src={img} />
         <Typography style={{ paddingLeft: 6 }}>Live chat (beta)</Typography>
       </div>
-      <div style={{ overflowY: "scroll", maxHeight: "80%" }}>
+      <div style={{ overflowY: "scroll",overflowX:"hidden",overflowWrap:"break-word", maxHeight: "80%" }}>
         {chat.map((e) => {
           return (
             <ListItem alignItems="flex-start">
