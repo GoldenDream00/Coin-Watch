@@ -11,12 +11,14 @@ import {
 import SendIcon from "@mui/icons-material/Send";
 import { CryptoState } from "../context";
 import backImg from "../chat_back.jpg";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 
 const Chatbox = ({ socket, img }) => {
   const messagesEndRef = React.useRef(null);
   const { user } = CryptoState();
   const [message, setMessage] = React.useState("");
   const [chat, setChat] = React.useState([]);
+  const [count, setCount] = React.useState(0);
   const handleSubmit = (e) => {
     e.preventDefault();
     if (message.length > 0) {
@@ -39,7 +41,9 @@ const Chatbox = ({ socket, img }) => {
         block: "nearest",
       });
     });
-
+    socket.on("count", (c) => {
+      setCount(c);
+    })
     // eslint-disable-next-line
   }, []);
   return (
@@ -67,8 +71,19 @@ const Chatbox = ({ socket, img }) => {
       >
         <Avatar sx={{ width: 24, height: 24 }} alt="profile" src={img} />
         <Typography style={{ paddingLeft: 6 }}>Live chat (beta)</Typography>
+        <div style={{display:"flex",flexDirection:"row",position:"absolute",right:"5px"}}>
+          <VisibilityIcon />
+          <Typography>{count}</Typography>
+        </div>
       </div>
-      <div style={{ overflowY: "scroll",overflowX:"hidden",overflowWrap:"break-word", maxHeight: "80%" }}>
+      <div
+        style={{
+          overflowY: "scroll",
+          overflowX: "hidden",
+          overflowWrap: "break-word",
+          maxHeight: "80%",
+        }}
+      >
         {chat.map((e) => {
           return (
             <ListItem alignItems="flex-start">
