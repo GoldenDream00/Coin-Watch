@@ -1,8 +1,7 @@
 import { createTheme, ThemeProvider } from '@mui/material'
 import React, { } from 'react'
 import TableComp from '../components/Table';
-
-
+import MetaTags from "react-meta-tags";
 const darkTheme = createTheme({
     palette: {
         mode: 'dark',

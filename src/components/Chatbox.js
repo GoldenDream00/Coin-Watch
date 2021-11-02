@@ -17,19 +17,17 @@ const Chatbox = ({ socket, img }) => {
   const { user } = CryptoState();
   const [message, setMessage] = React.useState("");
   const [chat, setChat] = React.useState([]);
-  const handleSubmit = async(e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    if (socket.connected === false) {
-      await socket.connect();
-    }
     if (message.length > 0) {
       let userInfo = {
         displayName: user.displayName,
         photoURL: user.photoURL,
       };
-      await socket.emit("chatMessage", { message, user: userInfo });
-      setMessage("");
+       socket.emit("chatMessage", { message, user: userInfo });
+      
     }
+    setMessage("");
   };
   React.useEffect(() => {
     socket.on("message", (chat) => {
@@ -73,7 +71,7 @@ const Chatbox = ({ socket, img }) => {
       <div style={{ overflowY: "scroll", maxHeight: "80%" }}>
         {chat.map((e) => {
           return (
-            <ListItem alignItems="flex-start" key= {new Date()}>
+            <ListItem alignItems="flex-start">
               <ListItemAvatar>
                 <Avatar alt="profile" src={e.user.photoURL} />
               </ListItemAvatar>
