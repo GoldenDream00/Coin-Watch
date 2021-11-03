@@ -29,7 +29,6 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { db } from "../firebase";
 import { doc, setDoc } from "firebase/firestore";
 import Chatbox from "../components/Chatbox";
-import LikedCoins from "../components/LikedCoins";
 
 const useStyles = makeStyles(() => ({
   container: {
