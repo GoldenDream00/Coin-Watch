@@ -29,6 +29,7 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { db } from "../firebase";
 import { doc, setDoc } from "firebase/firestore";
 import Chatbox from "../components/Chatbox";
+import LikedCoins from "../components/LikedCoins";
 
 const useStyles = makeStyles(() => ({
   container: {
@@ -69,6 +70,7 @@ const Coin = () => {
   const [time, setTime] = useState();
   const [change, setChange] = useState(0);
   const [fullScreen, setFullScreen] = useState(false);
+  const [count, setCount] = useState(0);
   const [soc, setSoc] = useState(null);
   const fetchData = async () => {
     setLoading(true);
@@ -168,6 +170,9 @@ const Coin = () => {
     socket.on("time", (msg) => {
       setTime(msg);
     });
+    socket.on("count", (c) => {
+      setCount(c);
+    })
     socket.on("data", (data) => {
       const currentVal = data.market_data.current_price[currency.toLowerCase()];
       setCoin((preVal) => {
@@ -421,7 +426,11 @@ const Coin = () => {
             <Grid container>
               <Grid item lg={12} md={12} xs={12}>
                 {user && soc && soc.connected && (
-                  <Chatbox socket={soc} img={coin?.image?.thumb} />
+                  <Chatbox
+                    socket={soc}
+                    img={coin?.image?.thumb}
+                    count={count}
+                  />
                 )}
                 {soc && !user && (
                   <Alert severity="info">
