@@ -17,5 +17,5 @@ View top cryptocurrency prices live, crypto charts, market cap, and trading volu
 <br>
 <hr>
 <br>
-Copyright © 2021 Coinwatch
+Copyright © 2022 Coinwatch
 
